@@ -190,6 +190,31 @@ sub on_action {
   return 1;
 }
 
+sub create_hint_overlay {
+  my ( $self, $ncol, $force ) = @_;
+  $ncol  ||= $self->ncol;
+  $force ||= 0;
+  if ( $force || !defined( $self->{overlay} ) ) {
+    my $text = sprintf( "url-hint mode: press '%s' to exit",
+      $self->XKeysymToString( $self->{exit_keysym} ) );
+    if ( defined( $self->{overlay} ) ) {
+      $self->{overlay}->hide;
+      delete $self->{overlay};
+    }
+    $self->{overlay} = $self->overlay( 0, -1, $ncol, 1, urxvt::OVERLAY_RSTYLE, 0 );
+    $self->{overlay}->set( 0, 0, $self->special_encode($text) );
+  }
+  return;
+}
+
+sub on_resize_all_windows {
+  my ( $self, $new_width, $new_height ) = @_;
+  if ( defined( $self->{overlay} ) ) {
+    $self->create_hint_overlay( $new_width, 1 );
+  }
+  return 0;
+}
+
 sub calc_pattern_length {
   my ( $chars, $n_matches ) = @_;
   return max( 1, ceil( log($n_matches) / log( scalar @{$chars} ) ) );
@@ -282,10 +307,7 @@ sub enter_hint_mode {
     $self->exit_hint_mode;
   }
   else {
-    my $text = sprintf( "url-hint mode: press '%s' to exit",
-      $self->XKeysymToString( $self->{exit_keysym} ) );
-    $self->{overlay} = $self->overlay( 0, -1, $self->ncol, 1, urxvt::OVERLAY_RSTYLE, 0 );
-    $self->{overlay}->set( 0, 0, $self->special_encode($text) );
+    $self->create_hint_overlay;
     $self->enable( key_press => \&key_pressed );
   }
 
