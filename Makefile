@@ -33,7 +33,7 @@ tidy: url-hint
 
 check: url-hint
 	perlcritic --quiet --harsh --verbose 8 $<
-	perltidy -st -se $< >/dev/null
+	perltidy -st -se -ast $< >/dev/null
 
 clean:
 	rm -f urxvt-url-hint.1 urxvt-url-hint.1.gz
