@@ -277,13 +277,14 @@ sub update {
       map { $self->{rend_matched} } ( 1 .. length( $self->{pressed} ) )
       if ( length( $self->{pressed} ) > 0 );
     for my $match ( @{ $self->{matches} } ) {
-      my $hint     = join( '', @{ $iter->next } );
-      my $hint_enc = $self->special_encode($hint);
-      my $x        = max( 0, $match->{offset_x} - $hint_len );
-      my $y        = $match->{offset_y};
+      my $hint         = join( '', @{ $iter->next } );
+      my $hint_enc     = $self->special_encode($hint);
+      my $hint_enc_len = $self->strwidth($hint);
+      my $x            = max( 0, $match->{offset_x} - $hint_enc_len );
+      my $y            = $match->{offset_y};
       $match->{hint} = $hint;
       $match->{overlay} =
-        $self->overlay( $x, $y, $hint_len, 1, $self->{rend_unmatched}, 0 );
+        $self->overlay( $x, $y, $hint_enc_len, 1, $self->{rend_unmatched}, 0 );
       if ( startswith( $match->{hint}, $self->{pressed} ) ) {
         $match->{overlay}->set( 0, 0, $hint_enc, \@pressed_rend );
       }
