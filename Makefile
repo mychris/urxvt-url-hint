@@ -2,10 +2,11 @@ SHELL := /bin/sh
 
 GIT_REV_COUNT != git rev-list --count HEAD 2>/dev/null || echo '0'
 GIT_REV_SHORT != git rev-parse --short HEAD 2>/dev/null || echo '0000'
-GIT_VERSION := r$(GIT_REV_COUNT).$(GIT_REV_SHORT)
+GIT_DIRTY != git diff --no-ext-diff --quiet --exit-code && echo '' || echo '+'
+GIT_VERSION := r$(GIT_REV_COUNT).$(GIT_REV_SHORT)$(GIT_DIRTY)
 GIT_DATE != git log -1 --format='%as' 2>/dev/null || date '+%Y-%m-%d'
 
-all: check README.pod urxvt-url-hint.1.gz
+all: README.pod urxvt-url-hint.1.gz
 
 # Always create a new README.pod file and change the real one only
 # if there are changes.
@@ -22,6 +23,7 @@ README.pod.bak: url-hint
 # with a page header of RXVT-UNICODE (see man 1 urxvt-matcher)
 urxvt-url-hint.1: url-hint
 	pod2man --utf8 --section=1 --quotes=\" --name=urxvt-url-hint \
+	        --nourl \
 	        --date=$(GIT_DATE) --release=$(GIT_VERSION) \
 	        --center=RXVT-UNICODE $< $@
 

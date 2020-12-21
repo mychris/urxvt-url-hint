@@ -105,11 +105,11 @@ from CPAN, or using the package manager of your Linux distribution:
 
 =over 4
 
-=item B<Regexp::Common>
+=item L<B<Regexp::Common>|https://metacpan.org/pod/Regexp::Common>
 
 Regular expression to match URIs.
 
-=item B<Algorithm::Combinatorics>
+=item L<B<Algorithm::Combinatorics>|https://metacpan.org/pod/Algorithm::Combinatorics>
 
 Efficient generation of combinatorial sequences.
 
