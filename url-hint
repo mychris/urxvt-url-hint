@@ -66,11 +66,7 @@ I<url-hint.launcher>.
 
 =over 4
 
-=item I<url-hint:hint> action
-
-Action which enters the hint mode.
-
-=item I<url-hint.launcher>
+=item I<launcher>
 
 Application which should be used to open the chosen URL.
 
@@ -114,6 +110,10 @@ Regular expression to match URIs.
 Efficient generation of combinatorial sequences.
 
 =back
+
+=head1 SEE ALSO
+
+L<urxvt(1)>, L<urxvtperl(3)>, L<xrdb(1)>
 
 =head1 COPYRIGHT and LICENSE
 
