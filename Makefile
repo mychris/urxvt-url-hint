@@ -5,7 +5,7 @@ GIT_REV_COUNT != git rev-list --count HEAD 2>/dev/null || echo '0'
 GIT_REV_SHORT != git rev-parse --short HEAD 2>/dev/null || echo '0000'
 GIT_DIRTY != git diff --no-ext-diff --quiet --exit-code && echo '' || echo '+'
 GIT_VERSION := r$(GIT_REV_COUNT).$(GIT_REV_SHORT)$(GIT_DIRTY)
-GIT_DATE != git log -1 --format='%as' 2>/dev/null || date '+%Y-%m-%d'
+GIT_DATE != test "z$(GIT_DIRTY)" = "z" && git log -1 --format='%as' 2>/dev/null || date '+%Y-%m-%d'
 
 SRC := url-hint
 
