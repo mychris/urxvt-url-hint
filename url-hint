@@ -62,17 +62,31 @@ If the screen changes, the partially provided pattern might be reset.
 The application which is used to open the URL is configured by the resource
 I<url-hint.launcher>.
 
+=head1 INSTALLATION
+
+B<URxvt> looks into multiple different directories when searching for extensions.
+These can be configured using the B<URxvt> resource I<perl-lib>.
+Please see L<urxvt(1)>.
+
+If this extension should be installed into the users home directory, the
+provided B<Makefile> can be used.
+Simply run C<make install-home> as the desired user.
+This installs the extension and the man page into the correct places in the users
+home directory.
+B<URxvt> should find the extension without the need to configure the I<perl-lib>
+resource.
+
 =head1 RESOURCES
 
 =over 4
 
 =item I<launcher>
 
-Application which should be used to open the chosen URL.
+Application which should be used to open URLs.
 
 =item I<hint-chars>
 
-Characters which are used to generate the pattern.
+Valid characters for the generated patterns.
 
 =item I<exit-keysym>
 
