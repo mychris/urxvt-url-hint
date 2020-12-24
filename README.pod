@@ -13,8 +13,9 @@ browser extensions).
 
 To enter the hint mode, create a B<URxvt> B<keysym> resource which invokes
 the B<url-hint:hint> action.
-Once the hint mode is activated, you can exit it again by pressing either the
-key specified by the B<url-hint.exit-keysym> resource, or the Escape key.
+Once the hint mode is activated (by pressing the B<keysym>), one can exit it
+again by pressing either the key specified by the B<url-hint.exit-keysym>
+resource, or the Escape key.
 Use the B<xev> utility to find the name of the desired keysym.
 
 B<NOTE>: For B<url-hint.exit-keysym>, the keysym description used by B<URxvt>
@@ -38,6 +39,12 @@ If the screen changes, the partially provided pattern might be reset.
 The application which is used to open the URL is configured by the resource
 B<url-hint.launcher>.
 
+The B<url-hint:hint> action and B<url-hint.launcher> resource support a
+C<.E<lt>numberE<gt>>> suffix.
+The keysym defined for a B<url-hint:hint> with a specific suffix uses the launcher
+with the same suffix.
+This enables one to have multiple different keysyms for different applications.
+
 =head1 INSTALLATION
 
 B<URxvt> looks into multiple different directories when searching for extensions.
@@ -56,9 +63,12 @@ resource.
 
 =over 4
 
-=item B<launcher>
+=item B<launcher>[I<.E<lt>numberE<gt>>]
 
-Application which should be used to open URLs.
+Application which should be used to open URLs. The URL is always appended as an
+addition argument to the given launcher.
+If the arguments need be rearrange, wrap the application into a call to C</bin/sh>.
+See the examples.
 
 =item B<hint-chars>
 
@@ -70,12 +80,23 @@ Key to exit the hint mode.
 
 =back
 
+=head1 ACTIONS
+
+=over 4
+
+=item B<hint>[I<.E<lt>numberE<gt>>]
+
+Starts the hint mode and uses the B<url-hint.launcher> resource with the same
+I<.E<lt>numberE<gt>> suffix to launch the chosen URL.
+
+=back
+
 =head1 EXAMPLE RESOURCE
 
 The following shows an example resource configuration with the default values
 for each resource entry:
 
-    URxvt.url-hint.launcher: /usr/bin/xdg-open
+    URxvt.url-hint.launcher: /usr/bin/env xdg-open
     URxvt.url-hint.hint-chars: asdfjk
     URxvt.url-hint.exit-keysym: q
 
@@ -83,6 +104,19 @@ Enable the extension and configure a keysym for the B<url-hint:hint> action:
 
     URxvt.perl-ext-common: default,url-hint,...
     URxvt.keysym.M-f: url-hint:hint
+
+The following shows a configuration, for wich C<M-f> launches C<xdg-open>, and
+C<M-F> copies the URL into the clipboard:
+
+    URxvt.url-hint.launcher.1: xdg-open
+    URxvt.url-hint.launcher.2: /bin/sh -c 'printf "%s" "$1" |xclip' url-hint.launcher.2
+    URxvt.keysym.M-f: url-hint:hint.1
+    URxvt.keysym.M-F: url-hint:hint.2
+
+The second launcher starts a new shell and executes C<printf "%s" "$1" |xclip> in it.
+The string C<url-hint.launcher.2> would be accessible as C<$0> in the shell (the name of the command).
+B<url-hint> appends the URL to the launcher call, which will therefore be accessible in the shell
+script via C<$1>.
 
 =head1 DEPENDENCIES
 
