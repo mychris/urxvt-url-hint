@@ -1,8 +1,6 @@
-=head1 NAME
+=head1 url-hint
 
 url-hint - Extension for URxvt which brings a hint mode to follow URLs
-
-=head1 DESCRIPTION
 
 This B<URxvt> extension adds a hint mode to the terminal emulator, which
 highlights URLs.
@@ -45,7 +43,7 @@ The keysym defined for a B<url-hint:hint> with a specific suffix uses the launch
 with the same suffix.
 This enables one to have multiple different keysyms for different applications.
 
-=head1 INSTALLATION
+=head2 INSTALLATION
 
 B<URxvt> looks into multiple different directories when searching for extensions.
 These can be configured using the B<URxvt> resource B<perl-lib>.
@@ -59,7 +57,7 @@ home directory.
 B<URxvt> should find the extension without the need to configure the B<perl-lib>
 resource.
 
-=head1 RESOURCES
+=head2 RESOURCES
 
 =over 4
 
@@ -80,7 +78,7 @@ Key to exit the hint mode.
 
 =back
 
-=head1 ACTIONS
+=head2 ACTIONS
 
 =over 4
 
@@ -91,7 +89,7 @@ I<.E<lt>numberE<gt>> suffix to launch the chosen URL.
 
 =back
 
-=head1 EXAMPLE RESOURCE
+=head2 EXAMPLE RESOURCE
 
 The following shows an example resource configuration with the default values
 for each resource entry:
@@ -118,7 +116,7 @@ The string C<url-hint.launcher.2> would be accessible as C<$0> in the shell (the
 B<url-hint> appends the URL to the launcher call, which will therefore be accessible in the shell
 script via C<$1>.
 
-=head1 DEPENDENCIES
+=head2 DEPENDENCIES
 
 This extensions depends on the following perl modules, which can be downloaded
 from CPAN, or using the package manager of your Linux distribution:
@@ -135,11 +133,11 @@ Efficient generation of combinatorial sequences.
 
 =back
 
-=head1 SEE ALSO
+=head2 SEE ALSO
 
 L<urxvt(1)>, L<urxvtperl(3)>, L<xrdb(1)>
 
-=head1 COPYRIGHT and LICENSE
+=head2 COPYRIGHT and LICENSE
 
 This software is Copyright (c) 2020, Christoph GE<ouml>ttschkes.
 

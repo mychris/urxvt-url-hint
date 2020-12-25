@@ -12,7 +12,17 @@ SRC := url-hint
 all: README.pod urxvt-url-hint.1.gz
 
 README.pod: $(SRC)
-	podselect $? | sed -e :a -e '/^\n*$$/{$$d;N;ba' -e '}' >$@
+	@# remove the DESCRIPTION head (not the section, just the heading),
+	@# make every =head1 (exception the first one) a =head2,
+	@# and change the first heading (the only =head1) from NAME to $(SRC)
+	podselect $? \
+	    | sed -e '/^=head1 DESCRIPTION/d ; s/^=head1/=head2/' \
+	          -e 's/^\=head2\([[:space:]]\+\)NAME[[:space:]]*/=head1\1'"$?"'/' \
+	    > $@
+	@# Merge consecutive empty lines into one
+	sed -i -e '/^$$/N;/^\n$$/D' $@
+	@# Remove empty lines at the end of the document
+	sed -i -e :a -e '/^\n*$$/{$$d;N;ba' -e '}' $@
 
 # URxvt itself installs the man pages for the core extensions in section 1
 # with a page header of RXVT-UNICODE (see man 1 urxvt-matcher).
@@ -25,10 +35,10 @@ urxvt-url-hint.1.gz: $(SRC)
 	              --center=RXVT-UNICODE \
 	    | gzip -9 >$@
 
-tidy: $(SRC)
+tidy:
 	perltidy -b $(SRC)
 
-check: $(SRC)
+check:
 	podchecker -warnings -warnings $(SRC)
 	perlcritic --quiet --harsh --verbose 8 $(SRC)
 	perltidy -st -se -ast $(SRC) >/dev/null
